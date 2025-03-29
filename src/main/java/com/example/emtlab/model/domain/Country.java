@@ -1,15 +1,15 @@
-package com.example.emtlab.model;
+package com.example.emtlab.model.domain;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 
 @Entity
 @Data
+@Getter
 public class Country {
 
     @Id

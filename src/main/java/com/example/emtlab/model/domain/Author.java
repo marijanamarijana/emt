@@ -1,4 +1,4 @@
-package com.example.emtlab.model;
+package com.example.emtlab.model.domain;
 
 import jakarta.persistence.*;
 import lombok.Data;
@@ -24,9 +24,5 @@ public class Author {
     }
 
     public Author() {
-    }
-
-    public Long getId() {
-        return id;
     }
 }

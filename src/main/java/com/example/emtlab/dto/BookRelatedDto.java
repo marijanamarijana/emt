@@ -1,4 +1,4 @@
-package com.example.emtlab.model.dto;
+package com.example.emtlab.dto;
 
 import com.example.emtlab.model.enumeration.BookCategory;
 import jdk.jfr.Category;
@@ -25,29 +25,5 @@ public class BookRelatedDto {
         this.authorId = authorId;
         this.availableCopies = availableCopies;
         this.relatedBookIds = relatedBookIds;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public BookCategory getCategory() {
-        return category;
-    }
-
-    public Long getAuthorId() {
-        return authorId;
-    }
-
-    public Integer getAvailableCopies() {
-        return availableCopies;
-    }
-
-    public List<Long> getRelatedBookIds() {
-        return relatedBookIds;
     }
 }
