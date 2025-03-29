@@ -94,37 +94,17 @@ public class BookServiceImpl implements BookService {
 
 
         return book.getRelatedBooks().stream()
-                .map(b -> {
-                    return new BookRelatedDto(
-                            b.getId(),
-                            b.getName(),
-                            b.getCategory(),
-                            (b.getAuthor() != null) ? b.getAuthor().getId() : null,
-                            b.getAvailableCopies(),
-                            (b.getRelatedBooks() != null) ?
-                                    b.getRelatedBooks().stream().map(Book::getId).collect(Collectors.toList())
-                                    : new ArrayList<Long>()
-                    );
-                })
+                .map(b -> new BookRelatedDto(
+                        b.getId(),
+                        b.getName(),
+                        b.getCategory(),
+                        (b.getAuthor() != null) ? b.getAuthor().getId() : null,
+                        b.getAvailableCopies(),
+                        (b.getRelatedBooks() != null) ?
+                                b.getRelatedBooks().stream().map(Book::getId).collect(Collectors.toList())
+                                : new ArrayList<>()
+                ))
                 .collect(Collectors.toList());
 
     }
-
-
-
-//    @Override
-//    public List<BookRelatedDto> getRelated(Long bookId) {
-//        Book book = bookRepository.findById(bookId)
-//                .orElseThrow(() -> new RuntimeException("Book was not found!!"));
-//
-//        return book.getRelatedBooks().stream()
-//                .map(this::convert)
-//                .collect(Collectors.toList());
-//    }
-//    private BookRelatedDto convert(Book book) {
-//        List<Long> related = book.getRelatedBooks().stream().map(Book::getId).collect(Collectors.toList());
-//
-//        return new BookRelatedDto(book.getId(), book.getName(), book.getCategory(), book.getAuthor().getId(), book.getAvailableCopies(), related);
-//    }
-
 }
