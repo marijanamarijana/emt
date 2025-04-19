@@ -4,6 +4,8 @@ import com.example.emtlab.dto.AuthorCreateDto;
 import com.example.emtlab.dto.AuthorDisplayDto;
 import com.example.emtlab.dto.AuthorUpdateDto;
 import com.example.emtlab.model.domain.Country;
+import com.example.emtlab.model.projections.AuthorProjection;
+import com.example.emtlab.model.views.AuthorsPerCountryView;
 import com.example.emtlab.service.application.AuthorApplicationService;
 import com.example.emtlab.service.domain.AuthorService;
 import com.example.emtlab.service.domain.CountryService;
@@ -60,5 +62,14 @@ public class AuthorApplicationServiceImpl implements AuthorApplicationService {
     @Override
     public void deleteById(Long id) {
         authorService.deleteById(id);
+    }
+
+    @Override
+    public List<AuthorsPerCountryView> getAuthorsByCountry() {
+        return authorService.getAuthorsByCountry();
+    }
+    @Override
+    public List<AuthorProjection> takeNameAndSurnameByProjection(){
+        return authorService.takeNameAndSurnameByProjection();
     }
 }

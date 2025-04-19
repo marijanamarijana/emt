@@ -2,7 +2,9 @@ package com.example.emtlab.service.domain.impl;
 
 import com.example.emtlab.model.domain.Book;
 import com.example.emtlab.dto.BookRelatedDto;
+import com.example.emtlab.model.views.BooksPerAuthorView;
 import com.example.emtlab.repo.BookRepository;
+import com.example.emtlab.repo.BooksPerAuthorViewRepository;
 import com.example.emtlab.service.domain.AuthorService;
 import com.example.emtlab.service.domain.BookService;
 import jakarta.transaction.Transactional;
@@ -18,10 +20,12 @@ public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
     private final AuthorService authorService;
+    private final BooksPerAuthorViewRepository booksPerAuthorViewRepository;
 
-    public BookServiceImpl(BookRepository bookRepository, AuthorService authorService) {
+    public BookServiceImpl(BookRepository bookRepository, AuthorService authorService, BooksPerAuthorViewRepository booksPerAuthorViewRepository) {
         this.bookRepository = bookRepository;
         this.authorService = authorService;
+        this.booksPerAuthorViewRepository = booksPerAuthorViewRepository;
     }
 
     @Override
@@ -106,5 +110,15 @@ public class BookServiceImpl implements BookService {
                 ))
                 .collect(Collectors.toList());
 
+    }
+
+    @Override
+    public void refreshMaterializedView() {
+        booksPerAuthorViewRepository.refreshMaterializedView();
+    }
+
+    @Override
+    public List<BooksPerAuthorView> getBooksPerAuthorStats() {
+        return booksPerAuthorViewRepository.findAll();
     }
 }

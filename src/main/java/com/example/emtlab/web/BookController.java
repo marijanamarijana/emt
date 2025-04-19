@@ -1,6 +1,7 @@
 package com.example.emtlab.web;
 
 import com.example.emtlab.dto.*;
+import com.example.emtlab.model.views.BooksPerAuthorView;
 import com.example.emtlab.service.application.BookApplicationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -55,6 +56,12 @@ public class BookController {
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @Operation(summary = "Get books by author", description = "Returns a list of the number of books by each author")
+    @GetMapping("/by-author")
+    public ResponseEntity<List<BooksPerAuthorView>> getBooksByAuthor() {
+        return ResponseEntity.ok(bookService.getBooksPerAuthorStats());
     }
 
     @PatchMapping("/rented/{id}")

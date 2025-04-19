@@ -9,7 +9,7 @@ import java.util.Set;
 
 public interface UserApplicationService {
     Optional<UserDisplayDto> register(UserCreateDto createUserDto);
-    Optional<UserDisplayDto> login(UserLoginDto loginUserDto);
+    Optional<LoginResponseDto> login(UserLoginDto loginUserDto);
     Optional<UserDisplayDto> findByUsername(String username);
     List<BookDisplayDto> getWishlist(String username);
     void addBookToWishlist(String username, Long bookId);

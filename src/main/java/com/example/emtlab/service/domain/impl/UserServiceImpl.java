@@ -4,11 +4,7 @@ import com.example.emtlab.model.domain.Author;
 import com.example.emtlab.model.domain.Book;
 import com.example.emtlab.model.domain.User;
 import com.example.emtlab.model.enumeration.Role;
-import com.example.emtlab.model.exceptions.InvalidArgumentsException;
-import com.example.emtlab.model.exceptions.InvalidUsernameOrPasswordException;
-import com.example.emtlab.model.exceptions.PasswordsDoNotMatchException;
-import com.example.emtlab.model.exceptions.UsernameAlreadyExistsException;
-import com.example.emtlab.model.exceptions.InvalidUserCredentialsException;
+import com.example.emtlab.model.exceptions.*;
 import com.example.emtlab.repo.UserRepository;
 import com.example.emtlab.service.domain.BookService;
 import com.example.emtlab.service.domain.UserService;
@@ -46,12 +42,13 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public User login(String username, String password) {
-        if (username == null || username.isEmpty() || password == null || password.isEmpty()) {
+        if (username == null || username.isEmpty() || password == null || password.isEmpty())
             throw new InvalidArgumentsException();
-        }
-        return userRepository.findByUsernameAndPassword(username, password).orElseThrow(
-                InvalidUserCredentialsException::new);
-
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException(username));
+        if (!passwordEncoder.matches(password, user.getPassword()))
+            throw new InvalidUserCredentialsException();
+        return user;
     }
 
     @Override
@@ -110,7 +107,8 @@ public class UserServiceImpl implements UserService{
     }
     @Override
     public List<User> getAllUsers() {
-        return userRepository.findAll();
+        return userRepository.loadAll();
+        //return userRepository.findAll();
     }
 
     @Override

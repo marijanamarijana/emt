@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -47,7 +48,7 @@ public class UserController {
         }
     }
 
-    @Operation(summary = "User login", description = "Authenticates a user and starts a session")
+    @Operation(summary = "User login", description = "Authenticates a user and generates a JWT")
     @ApiResponses(
             value = {@ApiResponse(
                     responseCode = "200",
@@ -55,37 +56,38 @@ public class UserController {
             ), @ApiResponse(responseCode = "404", description = "Invalid username or password")}
     )
     @PostMapping("/login")
-    public ResponseEntity<UserDisplayDto> login(HttpServletRequest request) {
+    public ResponseEntity<LoginResponseDto> login(@RequestBody UserLoginDto userLoginDto) {
         try {
-            UserDisplayDto displayUserDto = userApplicationService.login(
-                    new UserLoginDto(request.getParameter("username"), request.getParameter("password"))
-            ).orElseThrow(InvalidUserCredentialsException::new);
-
-            request.getSession().setAttribute("user", displayUserDto.toUser());
-            return ResponseEntity.ok(displayUserDto);
+            return userApplicationService.login(userLoginDto)
+                    .map(ResponseEntity::ok)
+                    .orElseThrow(InvalidUserCredentialsException::new);
         } catch (InvalidUserCredentialsException e) {
             return ResponseEntity.notFound().build();
         }
     }
 
-    @Operation(summary = "User logout", description = "Ends the user's session")
-    @ApiResponse(responseCode = "200", description = "User logged out successfully")
-    @GetMapping("/logout")
-    public void logout(HttpServletRequest request) {
-        request.getSession().invalidate();
-    }
+
+//    @Operation(summary = "User logout", description = "Ends the user's session")
+//    @ApiResponse(responseCode = "200", description = "User logged out successfully")
+//    @GetMapping("/logout")
+//    public void logout(HttpServletRequest request) {
+//        request.getSession().invalidate();
+//    }
 
     @Operation(summary = "Get user's wishlist", description = "Returns the list of books in the user's wishlist.")
-    @GetMapping("/wishlist/{username}")
-    public List<BookDisplayDto> getWishlist(@PathVariable String username) {
-        return userApplicationService.getWishlist(username);
+    @GetMapping("/wishlist/")
+    public List<BookDisplayDto> getWishlist(@AuthenticationPrincipal UserDetails userDetails) {
+        //User user = userApplicationService.findByUsername(userDetails.getUsername()).orElseThrow().toUser();
+        return userApplicationService.getWishlist(userDetails.getUsername());
     }
 
     @Operation(summary = "Add book to wishlist", description = "Adds a book to the user's wishlist if copies are available.")
-    @PostMapping("/wishlist/add/{username}/{bookId}")
-    public ResponseEntity<Void> addBookToWishlist(@PathVariable String username, @PathVariable Long bookId) {
+    @PostMapping("/wishlist/addBook/{bookId}")
+    public ResponseEntity<Void> addBookToWishlist(@AuthenticationPrincipal UserDetails userDetails,
+                                                  @PathVariable Long bookId) {
         try {
-            userApplicationService.addBookToWishlist(username, bookId);
+           // User user = userApplicationService.findByUsername(userDetails.getUsername()).orElseThrow().toUser();
+            userApplicationService.addBookToWishlist(userDetails.getUsername(), bookId);
             return ResponseEntity.ok().build();
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().build();
@@ -93,10 +95,10 @@ public class UserController {
     }
 
     @Operation(summary = "Rent all books from wishlist", description = "Rents all books from the wishlist and removes them from it.")
-    @PostMapping("/wishlist/rent/{username}")
-    public ResponseEntity<Void> rentAllWishlistBooks(@PathVariable String username) {
+    @PostMapping("/wishlist/rentMyBooks")
+    public ResponseEntity<Void> rentAllWishlistBooks(@AuthenticationPrincipal UserDetails userDetails) {
         try {
-            userApplicationService.rentAllWishlistBooks(username);
+            userApplicationService.rentAllWishlistBooks(userDetails.getUsername());
             return ResponseEntity.ok().build();
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().build();
@@ -109,9 +111,10 @@ public class UserController {
         return ResponseEntity.ok(userApplicationService.getAllUsers());
     }
 
+    // from lab2 extra
     @PostMapping("/wishlist/faves")
-    public ResponseEntity<List<AuthorDisplayDto>> getFavoriteAuthorsByUsername(@AuthenticationPrincipal User user) {
-        List<AuthorDisplayDto> authors = userApplicationService.getFavoriteAuthorsByUsername(user.getUsername());
+    public ResponseEntity<List<AuthorDisplayDto>> getFavoriteAuthorsByUsername(@AuthenticationPrincipal UserDetails userDetails) {
+        List<AuthorDisplayDto> authors = userApplicationService.getFavoriteAuthorsByUsername(userDetails.getUsername());
         return ResponseEntity.ok(authors);
     }
 

@@ -1,6 +1,8 @@
 package com.example.emtlab.web;
 
 import com.example.emtlab.dto.*;
+import com.example.emtlab.model.projections.AuthorProjection;
+import com.example.emtlab.model.views.AuthorsPerCountryView;
 import com.example.emtlab.service.application.AuthorApplicationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -56,5 +58,17 @@ public class AuthorController {
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @Operation(summary = "Get number of authors by country", description = "Returns a list of the number of authors by each country")
+    @GetMapping("/by-country")
+    public ResponseEntity<List<AuthorsPerCountryView>> getAuthorsByCountry() {
+        return ResponseEntity.ok(authorService.getAuthorsByCountry());
+    }
+
+    @Operation(summary = "Get names of authors", description = "Returns the name and surname of all the authors")
+    @GetMapping("/names")
+    public ResponseEntity<List<AuthorProjection>> getNames(){
+        return ResponseEntity.ok(authorService.takeNameAndSurnameByProjection());
     }
 }
