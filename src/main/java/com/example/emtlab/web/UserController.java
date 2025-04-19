@@ -1,9 +1,7 @@
 package com.example.emtlab.web;
 
-import com.example.emtlab.dto.BookDisplayDto;
-import com.example.emtlab.dto.UserCreateDto;
-import com.example.emtlab.dto.UserDisplayDto;
-import com.example.emtlab.dto.UserLoginDto;
+import com.example.emtlab.dto.*;
+import com.example.emtlab.model.domain.User;
 import com.example.emtlab.model.exceptions.InvalidArgumentsException;
 import com.example.emtlab.model.exceptions.InvalidUserCredentialsException;
 import com.example.emtlab.model.exceptions.PasswordsDoNotMatchException;
@@ -14,6 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -109,5 +108,12 @@ public class UserController {
     public ResponseEntity<List<UserDisplayDto>> getAllUsers() {
         return ResponseEntity.ok(userApplicationService.getAllUsers());
     }
+
+    @PostMapping("/wishlist/faves")
+    public ResponseEntity<List<AuthorDisplayDto>> getFavoriteAuthorsByUsername(@AuthenticationPrincipal User user) {
+        List<AuthorDisplayDto> authors = userApplicationService.getFavoriteAuthorsByUsername(user.getUsername());
+        return ResponseEntity.ok(authors);
+    }
+
 
 }

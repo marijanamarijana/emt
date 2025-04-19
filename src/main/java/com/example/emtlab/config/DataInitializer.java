@@ -14,6 +14,8 @@ import jakarta.annotation.PostConstruct;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class DataInitializer {
 
@@ -61,7 +63,10 @@ public class DataInitializer {
 //        b3.setRelatedBooks(listB);
 //        bookRepository.save(b3);
 
-        userRepository.save(new User("user", passwordEncoder.encode("user"), "User name", "User surname", Role.ROLE_USER));
+        User u1 = new User("user", passwordEncoder.encode("user"), "User name", "User surname", Role.ROLE_USER);
+        u1.setBooksWishlist(List.of(b1, b2));
+
+        userRepository.save(u1);
         userRepository.save(new User("lib", passwordEncoder.encode("lib"), "Librarian name", "Librarian surname", Role.ROLE_LIBRARIAN));
 
     }

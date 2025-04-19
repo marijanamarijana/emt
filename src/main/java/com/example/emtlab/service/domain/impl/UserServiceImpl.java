@@ -1,5 +1,6 @@
 package com.example.emtlab.service.domain.impl;
 
+import com.example.emtlab.model.domain.Author;
 import com.example.emtlab.model.domain.Book;
 import com.example.emtlab.model.domain.User;
 import com.example.emtlab.model.enumeration.Role;
@@ -16,8 +17,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -113,4 +113,19 @@ public class UserServiceImpl implements UserService{
         return userRepository.findAll();
     }
 
-}
+    @Override
+    public List<Author> getFavoriteAuthorsByUsername(String username) {
+        return userRepository.getFavoriteAuthorsByUsername(username);
+    }
+//        User user = userRepository.findById(username)
+//                .orElseThrow(() -> new RuntimeException("User not found"));
+//
+//        Set<Author> authors= new HashSet<>();
+//        for (int i = 0; i < user.getBooksWishlist().size(); i++) {
+//            authors.add(user.getBooksWishlist().get(i).getAuthor());
+//        }
+//        return authors.stream().toList();
+//        }
+
+    }
+

@@ -1,16 +1,16 @@
 package com.example.emtlab.service.application.impl;
 
-import com.example.emtlab.dto.BookDisplayDto;
-import com.example.emtlab.dto.UserCreateDto;
-import com.example.emtlab.dto.UserDisplayDto;
-import com.example.emtlab.dto.UserLoginDto;
+import com.example.emtlab.dto.*;
 import com.example.emtlab.model.domain.User;
 import com.example.emtlab.service.application.UserApplicationService;
 import com.example.emtlab.service.domain.UserService;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -68,6 +68,14 @@ public class UserApplicationServiceImpl implements UserApplicationService {
         return userService.getAllUsers()
                 .stream()
                 .map(UserDisplayDto::from)
+                .toList();
+    }
+
+    @Override
+    public List<AuthorDisplayDto> getFavoriteAuthorsByUsername(String username) {
+        return userService.getFavoriteAuthorsByUsername(username)
+                .stream()
+                .map(AuthorDisplayDto::from)
                 .toList();
     }
 }
