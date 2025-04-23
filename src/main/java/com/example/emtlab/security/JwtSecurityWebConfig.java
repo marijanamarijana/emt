@@ -56,19 +56,15 @@ public class JwtSecurityWebConfig {
                                         "/api/users/login"
                                 )
                                 .permitAll()
+                                .requestMatchers("/api/users/wishlist/**")
+                                .hasRole("USER")
                                 .requestMatchers(
-//                                        "/api/users",
-//                                        "/api/books",
-//                                        "/api/authors",
-//                                        "/api/countries"
-                                        "/api/users/**",
-                                        "/api/books/**",
-                                        "/api/authors/**",
-                                        "/api/countries/**"
+                                        "/api/users",
+                                        "/api/books",
+                                        "/api/authors",
+                                        "/api/countries"
                                 )
                                 .hasAnyRole("USER", "LIBRARIAN")
-//                                .permitAll()
-//                                .requestMatchers("/api/users/wishlist/**").hasRole("USER")
                                 .anyRequest()
                                 .hasRole("LIBRARIAN")
                 )

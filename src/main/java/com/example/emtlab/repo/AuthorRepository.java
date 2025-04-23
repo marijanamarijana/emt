@@ -10,7 +10,6 @@ import java.util.List;
 
 @Repository
 public interface AuthorRepository extends JpaRepository<Author, Long> {
-
-    @Query("select a.name, a.surname from Author a")
+    @Query("select a from Author a")
     List<AuthorProjection> takeNameAndSurnameByProjection();
 }
