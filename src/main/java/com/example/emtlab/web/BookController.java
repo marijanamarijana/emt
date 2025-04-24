@@ -2,6 +2,7 @@ package com.example.emtlab.web;
 
 import com.example.emtlab.dto.*;
 import com.example.emtlab.model.views.BooksPerAuthorView;
+import com.example.emtlab.model.views.GoodBooksView;
 import com.example.emtlab.service.application.BookApplicationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -70,13 +71,19 @@ public class BookController {
         return bookService.markRented(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
-}
+    }
 
     // from lab 1 extra
     @GetMapping("/related/{id}")
     @Operation(summary = "Get related books", description = "Retrieves books related to the given book ID.")
     public ResponseEntity<List<BookRelatedDto>> getRelatedBooks(@PathVariable Long id) {
         return ResponseEntity.ok(bookService.getRelated(id));
+    }
+
+    // from lab 3 extra
+    @GetMapping("/goodBooks")
+    public ResponseEntity<List<GoodBooksView>> getGoodBooks(){
+        return ResponseEntity.ok(bookService.getGoodBooks());
     }
 
 }

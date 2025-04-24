@@ -5,6 +5,8 @@ import com.example.emtlab.model.domain.Book;
 import com.example.emtlab.model.domain.User;
 import com.example.emtlab.model.enumeration.Role;
 import com.example.emtlab.model.exceptions.*;
+import com.example.emtlab.model.views.UserMostWishedAuthorsView;
+import com.example.emtlab.repo.UserMostWishedAuthorsViewRepository;
 import com.example.emtlab.repo.UserRepository;
 import com.example.emtlab.service.domain.BookService;
 import com.example.emtlab.service.domain.UserService;
@@ -21,11 +23,13 @@ public class UserServiceImpl implements UserService{
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final BookService bookService;
+    private final UserMostWishedAuthorsViewRepository userMostWishedAuthorsViewRepository;
 
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, BookService bookService) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, BookService bookService, UserMostWishedAuthorsViewRepository userMostWishedAuthorsViewRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.bookService = bookService;
+        this.userMostWishedAuthorsViewRepository = userMostWishedAuthorsViewRepository;
     }
 
     @Override
@@ -113,9 +117,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public List<Author> getFavoriteAuthorsByUsername(String username) {
-        return userRepository.getFavoriteAuthorsByUsername(username);
-    }
-//        User user = userRepository.findById(username)
+        //        User user = userRepository.findById(username)
 //                .orElseThrow(() -> new RuntimeException("User not found"));
 //
 //        Set<Author> authors= new HashSet<>();
@@ -124,6 +126,11 @@ public class UserServiceImpl implements UserService{
 //        }
 //        return authors.stream().toList();
 //        }
-
+        return userRepository.getFavoriteAuthorsByUsername(username);
+    }
+    @Override
+    public List<UserMostWishedAuthorsView> findUserMostWishedAuthorsViewByByUserId(String username) {
+        return userMostWishedAuthorsViewRepository.findByUsername(username);
+    }
     }
 

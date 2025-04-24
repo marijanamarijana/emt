@@ -17,4 +17,9 @@ public class ScheduledTasks {
         this.bookService.refreshMaterializedView();
     }
 
+    @Scheduled(cron = "0 * * * * *")
+    public void refreshGoodBooksView(){
+        this.bookService.refreshMaterializedViewGoodBooks();
+    }
+
 }

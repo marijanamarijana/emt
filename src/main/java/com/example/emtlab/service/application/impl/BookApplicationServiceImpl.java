@@ -6,6 +6,7 @@ import com.example.emtlab.dto.BookRelatedDto;
 import com.example.emtlab.dto.BookUpdateDto;
 import com.example.emtlab.model.domain.Author;
 import com.example.emtlab.model.views.BooksPerAuthorView;
+import com.example.emtlab.model.views.GoodBooksView;
 import com.example.emtlab.service.application.BookApplicationService;
 import com.example.emtlab.service.domain.AuthorService;
 import com.example.emtlab.service.domain.BookService;
@@ -77,5 +78,9 @@ public class BookApplicationServiceImpl implements BookApplicationService {
     @Override
     public List<BooksPerAuthorView> getBooksPerAuthorStats() {
         return bookService.getBooksPerAuthorStats();
+    }
+    @Override
+    public List<GoodBooksView> getGoodBooks() {
+        return bookService.getGoodBooks();
     }
 }

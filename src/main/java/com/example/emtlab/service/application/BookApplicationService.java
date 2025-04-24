@@ -5,6 +5,7 @@ import com.example.emtlab.dto.BookDisplayDto;
 import com.example.emtlab.dto.BookRelatedDto;
 import com.example.emtlab.dto.BookUpdateDto;
 import com.example.emtlab.model.views.BooksPerAuthorView;
+import com.example.emtlab.model.views.GoodBooksView;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,4 +20,5 @@ public interface BookApplicationService {
     Optional<BookDisplayDto> markRented(Long id);
     List<BookRelatedDto> getRelated(Long id);
     List<BooksPerAuthorView> getBooksPerAuthorStats();
+    List<GoodBooksView> getGoodBooks();
 }

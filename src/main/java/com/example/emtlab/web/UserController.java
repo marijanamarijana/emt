@@ -1,16 +1,15 @@
 package com.example.emtlab.web;
 
 import com.example.emtlab.dto.*;
-import com.example.emtlab.model.domain.User;
 import com.example.emtlab.model.exceptions.InvalidArgumentsException;
 import com.example.emtlab.model.exceptions.InvalidUserCredentialsException;
 import com.example.emtlab.model.exceptions.PasswordsDoNotMatchException;
+import com.example.emtlab.model.views.UserMostWishedAuthorsView;
 import com.example.emtlab.service.application.UserApplicationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -86,7 +85,6 @@ public class UserController {
     public ResponseEntity<Void> addBookToWishlist(@AuthenticationPrincipal UserDetails userDetails,
                                                   @PathVariable Long bookId) {
         try {
-           // User user = userApplicationService.findByUsername(userDetails.getUsername()).orElseThrow().toUser();
             userApplicationService.addBookToWishlist(userDetails.getUsername(), bookId);
             return ResponseEntity.ok().build();
         } catch (RuntimeException e) {
@@ -112,10 +110,14 @@ public class UserController {
     }
 
     // from lab2 extra
-    @PostMapping("/wishlist/faves")
+    @PostMapping("/wishlist/allFaveAuthors")
     public ResponseEntity<List<AuthorDisplayDto>> getFavoriteAuthorsByUsername(@AuthenticationPrincipal UserDetails userDetails) {
         List<AuthorDisplayDto> authors = userApplicationService.getFavoriteAuthorsByUsername(userDetails.getUsername());
         return ResponseEntity.ok(authors);
+    }
+    @GetMapping("/wishlist/faveAuthorsByView")
+    public ResponseEntity<List<UserMostWishedAuthorsView>> getFavoriteAuthors(@AuthenticationPrincipal UserDetails userDetails){
+        return ResponseEntity.ok(userApplicationService.findUserMostWishedAuthorsViewByByUserId(userDetails.getUsername()));
     }
 
 

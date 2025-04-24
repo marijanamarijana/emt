@@ -3,8 +3,10 @@ package com.example.emtlab.service.domain.impl;
 import com.example.emtlab.model.domain.Book;
 import com.example.emtlab.dto.BookRelatedDto;
 import com.example.emtlab.model.views.BooksPerAuthorView;
+import com.example.emtlab.model.views.GoodBooksView;
 import com.example.emtlab.repo.BookRepository;
 import com.example.emtlab.repo.BooksPerAuthorViewRepository;
+import com.example.emtlab.repo.GoodBooksViewRepository;
 import com.example.emtlab.service.domain.AuthorService;
 import com.example.emtlab.service.domain.BookService;
 import jakarta.transaction.Transactional;
@@ -21,11 +23,13 @@ public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
     private final AuthorService authorService;
     private final BooksPerAuthorViewRepository booksPerAuthorViewRepository;
+    private final GoodBooksViewRepository goodBooksViewRepository;
 
-    public BookServiceImpl(BookRepository bookRepository, AuthorService authorService, BooksPerAuthorViewRepository booksPerAuthorViewRepository) {
+    public BookServiceImpl(BookRepository bookRepository, AuthorService authorService, BooksPerAuthorViewRepository booksPerAuthorViewRepository, GoodBooksViewRepository goodBooksViewRepository) {
         this.bookRepository = bookRepository;
         this.authorService = authorService;
         this.booksPerAuthorViewRepository = booksPerAuthorViewRepository;
+        this.goodBooksViewRepository = goodBooksViewRepository;
     }
 
     @Override
@@ -115,6 +119,16 @@ public class BookServiceImpl implements BookService {
     @Override
     public void refreshMaterializedView() {
         booksPerAuthorViewRepository.refreshMaterializedView();
+    }
+
+    @Override
+    public void refreshMaterializedViewGoodBooks() {
+        goodBooksViewRepository.refreshMaterializedView();
+    }
+
+    @Override
+    public List<GoodBooksView> getGoodBooks() {
+        return goodBooksViewRepository.findAll();
     }
 
     @Override

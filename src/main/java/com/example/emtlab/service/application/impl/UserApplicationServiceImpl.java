@@ -2,6 +2,8 @@ package com.example.emtlab.service.application.impl;
 
 import com.example.emtlab.dto.*;
 import com.example.emtlab.model.domain.User;
+//import com.example.emtlab.model.views.UserMostWishedAuthorsView;
+import com.example.emtlab.model.views.UserMostWishedAuthorsView;
 import com.example.emtlab.security.JwtHelper;
 import com.example.emtlab.service.application.UserApplicationService;
 import com.example.emtlab.service.domain.UserService;
@@ -81,5 +83,10 @@ public class UserApplicationServiceImpl implements UserApplicationService {
                 .stream()
                 .map(AuthorDisplayDto::from)
                 .toList();
+    }
+
+    @Override
+    public List<UserMostWishedAuthorsView> findUserMostWishedAuthorsViewByByUserId(String username) {
+        return userService.findUserMostWishedAuthorsViewByByUserId(username);
     }
 }

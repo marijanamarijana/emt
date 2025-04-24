@@ -18,6 +18,8 @@ public class Book {
 
     private String name;
 
+    private Boolean state;
+
     @Enumerated(EnumType.STRING)
     private BookCategory category;
 
