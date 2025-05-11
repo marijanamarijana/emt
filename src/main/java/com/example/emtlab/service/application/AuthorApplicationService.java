@@ -1,6 +1,5 @@
 package com.example.emtlab.service.application;
 
-import com.example.emtlab.dto.AuthorCreateDto;
 import com.example.emtlab.dto.AuthorDisplayDto;
 import com.example.emtlab.dto.AuthorUpdateDto;
 import com.example.emtlab.model.projections.AuthorProjection;
@@ -13,7 +12,7 @@ public interface AuthorApplicationService {
     List<AuthorDisplayDto> findAll();
     Optional<AuthorDisplayDto> findById(Long id);
     Optional<AuthorDisplayDto> update(Long id, AuthorUpdateDto authorUpdateDto);
-    Optional<AuthorDisplayDto> save(AuthorCreateDto authorCreateDto);
+    Optional<AuthorDisplayDto> save(AuthorUpdateDto authorCreateDto);
     void deleteById(Long id);
     List<AuthorsPerCountryView> getAuthorsByCountry();
     List<AuthorProjection> takeNameAndSurnameByProjection();

@@ -1,6 +1,5 @@
 package com.example.emtlab.service.application.impl;
 
-import com.example.emtlab.dto.AuthorCreateDto;
 import com.example.emtlab.dto.AuthorDisplayDto;
 import com.example.emtlab.dto.AuthorUpdateDto;
 import com.example.emtlab.model.domain.Country;
@@ -38,7 +37,7 @@ public class AuthorApplicationServiceImpl implements AuthorApplicationService {
 
     @Override
     public Optional<AuthorDisplayDto> update(Long id, AuthorUpdateDto authorUpdateDto) {
-        Optional<Country> country = countryService.findById(authorUpdateDto.country());
+        Optional<Country> country = countryService.findById(authorUpdateDto.countryId());
 
         return authorService.update(id,
                         authorUpdateDto.toAuthor(
@@ -49,11 +48,11 @@ public class AuthorApplicationServiceImpl implements AuthorApplicationService {
     }
 
     @Override
-    public Optional<AuthorDisplayDto> save(AuthorCreateDto authorCreateDto) {
-        Optional<Country> country = countryService.findById(authorCreateDto.country());
+    public Optional<AuthorDisplayDto> save(AuthorUpdateDto authorDto) {
+        Optional<Country> country = countryService.findById(authorDto.countryId());
 
         if (country.isPresent()) {
-            return authorService.save(authorCreateDto.toAuthor(country.get()))
+            return authorService.save(authorDto.toAuthor(country.get()))
                     .map(AuthorDisplayDto::from);
         }
         return Optional.empty();

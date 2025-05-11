@@ -32,6 +32,7 @@ public class JwtSecurityWebConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
+        //corsConfiguration.setAllowCredentials(true);
         corsConfiguration.setAllowedOrigins(List.of("http://localhost:3000"));
         corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
         corsConfiguration.setAllowedHeaders(List.of("*"));
@@ -50,6 +51,10 @@ public class JwtSecurityWebConfig {
                 .authorizeHttpRequests(authorizeHttpRequestsCustomizer ->
                         authorizeHttpRequestsCustomizer
                                 .requestMatchers(
+                                        "/api/users/**",
+                                        "/api/books/**",
+                                        "/api/authors/**",
+                                        "/api/countries/**",
                                         "/swagger-ui/**",
                                         "/v3/api-docs/**",
                                         "/api/users/register",
@@ -59,10 +64,10 @@ public class JwtSecurityWebConfig {
                                 .requestMatchers("/api/users/wishlist/**")
                                 .hasRole("USER")
                                 .requestMatchers(
-                                        "/api/users",
-                                        "/api/books",
-                                        "/api/authors",
-                                        "/api/countries"
+                                        "/api/users/**",
+                                        "/api/books/**",
+                                        "/api/authors/**",
+                                        "/api/countries/**"
                                 )
                                 .hasAnyRole("USER", "LIBRARIAN")
                                 .anyRequest()

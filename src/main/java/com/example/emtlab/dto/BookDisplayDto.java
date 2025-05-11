@@ -6,9 +6,10 @@ import com.example.emtlab.model.enumeration.BookCategory;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public record BookDisplayDto (String name, BookCategory category, Long author, Integer availableCopies){
+public record BookDisplayDto (Long id, String name, BookCategory category, Long authorId, Integer availableCopies){
     public static BookDisplayDto from(Book book) {
         return new BookDisplayDto(
+                book.getId(),
                 book.getName(),
                 book.getCategory(),
                 book.getAuthor().getId(),

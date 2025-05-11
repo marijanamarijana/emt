@@ -35,7 +35,7 @@ public class BookController {
 
     @PostMapping("/add")
     @Operation(summary = "Add a new book", description = "Creates a new book record with the provided details.")
-    public ResponseEntity<BookDisplayDto> save(@RequestBody BookCreateDto book) {
+    public ResponseEntity<BookDisplayDto> save(@RequestBody BookUpdateDto book) {
         return bookService.save(book)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());

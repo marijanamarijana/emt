@@ -36,7 +36,7 @@ public class AuthorController {
 
     @Operation(summary = "Add a new author", description = "Creates a new author with the provided details.")
     @PostMapping("/add")
-    public ResponseEntity<AuthorDisplayDto> save(@RequestBody AuthorCreateDto author) {
+    public ResponseEntity<AuthorDisplayDto> save(@RequestBody AuthorUpdateDto author) {
         return authorService.save(author)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());

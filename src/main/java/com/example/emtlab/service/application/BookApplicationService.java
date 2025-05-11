@@ -15,7 +15,7 @@ public interface BookApplicationService {
     List<BookDisplayDto> findAll();
     Optional<BookDisplayDto> findById(Long id);
     Optional<BookDisplayDto> update(Long id, BookUpdateDto bookCreateDto);
-    Optional<BookDisplayDto> save(BookCreateDto bookCreateDto);
+    Optional<BookDisplayDto> save(BookUpdateDto bookCreateDto);
     void deleteById(Long id);
     Optional<BookDisplayDto> markRented(Long id);
     List<BookRelatedDto> getRelated(Long id);
